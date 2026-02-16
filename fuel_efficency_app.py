@@ -1,5 +1,3 @@
-
-
 import streamlit as st
 import pandas as pd
 import joblib
@@ -7,37 +5,41 @@ import joblib
 model = joblib.load("Fuel_Efiiciency_model.pkl")
 encoder = joblib.load("label_encoder.pkl")
 
-st.title("Fuel efiiciency Prediction app")
-mpg= st.number_input(mpg)
+st.title("Fuel Efficiency Prediction App")
 
-cylinders= st.number_input(" cylinders ")
-displacement= st.number_input("displacement")
-horsepower= st.number_input(" horsepower")
-weight= st.number_input("weight")
-acceleration= st.number_input(" acceleration")
-model_year= st.number_input("enter model year ")
-origin= st.number_input(" origin ")
-car name= st.selectbox("car name", encoder["car name"].classes_)
+mpg = st.number_input("Enter MPG value")
+cylinders = st.number_input("Enter Cylinders value")
+displacement = st.number_input("Enter Displacement value")
+horsepower = st.number_input("Enter Horsepower value")
+weight = st.number_input("Enter Weight value")
+acceleration = st.number_input("Enter Acceleration value")
+model_year = st.number_input("Enter Model Year value")
+origin = st.number_input("Enter Origin value")
+car_name = st.text_input("Enter Car Name")
 
 df = pd.DataFrame({
-    "mpg":[mpg],
-    "cylinders":[cylinders],
-    "displacement":[displacement],
-    "horsepower":[horsepower],
-    "weight":[weight],
-    "acceleration":[acceleration],
-    "model year":[model_year],
-    "origin":[origin],
-    "car name":[car name]
+    "mpg": [mpg],
+    "cylinders": [cylinders],
+    "displacement": [displacement],
+    "horsepower": [horsepower],
+    "weight": [weight],
+    "acceleration": [acceleration],
+    "model year": [model_year],
+    "origin": [origin],
+    "car name": [car_name]
 })
 
 if st.button("Predict"):
 
-    for col in encoder:
-        df[col] = encoder[col].transform(df[col])
+
+    if isinstance(encoder, dict):
+        for col in encoder:
+            df[col] = encoder[col].transform(df[col])
+    else:
+        df["car name"] = encoder.transform(df["car name"])
 
     df = df[model.feature_names_in_]
 
     prediction = model.predict(df)
 
-    st.success(f"Predicted fuel eficiency: {prediction[0]:,.2f}")
+    st.success(f"Predicted fuel efficiency: {prediction[0]:,.2f}")
