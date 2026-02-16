@@ -8,15 +8,16 @@ model = joblib.load("Fuel_Efiiciency_model.pkl")
 encoder = joblib.load("label_encoder.pkl")
 
 st.title("Fuel efiiciency Prediction app")
-mpg= st.number_input("Enter MPG value")
-cylinders= st.number_input("Enter Cylinders value")
-displacement= st.number_input("Enter Displacement value")
-horsepower= st.number_input("Enter Horsepower value")
-weight= st.number_input("Enter Weight value")
-acceleration= st.number_input("Enter Acceleration value")
-model_year= st.number_input("Enter Model Year value")
-origin= st.number_input("Enter Origin value")
-car name
+mpg= st.number_input(mpg)
+
+cylinders= st.number_input(" cylinders ")
+displacement= st.number_input("displacement")
+horsepower= st.number_input(" horsepower")
+weight= st.number_input("weight")
+acceleration= st.number_input(" acceleration")
+model_year= st.number_input("enter model year ")
+origin= st.number_input(" origin ")
+car name= st.selectbox("car name", encoder["car name"].classes_)
 
 df = pd.DataFrame({
     "mpg":[mpg],
